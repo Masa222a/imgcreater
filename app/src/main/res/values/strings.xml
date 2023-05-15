@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">imgcreater</string>
+    <string name="create_img">画像を生成する</string>
 </resources>

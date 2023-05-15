@@ -6,17 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.example.imgcreater.databinding.FragmentMainBinding
 import com.example.imgcreater.viewmodel.MainViewModel
-import com.example.imgcreater.R
 
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var binding: FragmentMainBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
+        binding.searchView.setBackgroundColor(resources.getColor(android.R.color.transparent))
     }
 
 }
