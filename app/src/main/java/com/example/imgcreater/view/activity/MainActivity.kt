@@ -1,7 +1,8 @@
-package com.example.imgcreater
+package com.example.imgcreater.view.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.imgcreater.R
 
 class MainActivity : AppCompatActivity() {
 
