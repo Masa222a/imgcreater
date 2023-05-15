@@ -1,4 +1,4 @@
-package com.example.imgcreater
+package com.example.imgcreater.viewmodel
 
 import androidx.lifecycle.ViewModel
 
