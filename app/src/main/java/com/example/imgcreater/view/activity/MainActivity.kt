@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         val bottomNav = binding.bottomNavigation
         bottomNav.setOnItemSelectedListener {
             when (it.itemId) {
-                R.id.main -> {
+                R.id.nav_main -> {
                     loadFragment(MainFragment())
                     true
                 }
