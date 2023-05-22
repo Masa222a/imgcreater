@@ -3,6 +3,10 @@ package com.example.imgcreater.view.activity
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.imgcreater.R
 import com.example.imgcreater.databinding.ActivityMainBinding
 import com.example.imgcreater.view.fragment.HistoryFragment
@@ -16,27 +20,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val host: NavHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHost) as NavHostFragment? ?: return
+
+        val navController = host.navController
+
+        setupBottomNavMenu(navController)
+
+    }
+
+    private fun setupBottomNavMenu(navController: NavController) {
         val bottomNav = binding.bottomNavigation
-        bottomNav.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.main -> {
-                    loadFragment(MainFragment())
-                    true
-                }
-                else -> {
-                    loadFragment(HistoryFragment())
-                    true
-                }
-            }
-        }
+        bottomNav.setupWithNavController(navController)
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.apply {
-            replace(R.id.container, fragment)
-            commit()
-        }
-
-    }
 }

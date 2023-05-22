@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/main"
+        android:id="@+id/nav_main"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="探す"/>
     <item
-        android:id="@+id/history"
+        android:id="@+id/nav_history"
         android:icon="@drawable/ic_baseline_history_24"
         android:title="履歴"/>
 </menu>
