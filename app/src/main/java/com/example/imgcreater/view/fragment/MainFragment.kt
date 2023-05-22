@@ -21,8 +21,14 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
+
         binding.searchView.setBackgroundColor(resources.getColor(android.R.color.transparent))
+
+        binding.generateButton.setOnClickListener {
+            findNavController().navigate(R.id.action_nav_main_to_resultFragment)
+        }
+
+        return binding.root
     }
 
 }
