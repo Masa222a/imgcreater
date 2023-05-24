@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.imgcreater.R
-import com.example.imgcreater.model.searchData
+import com.example.imgcreater.model.GenerateData
+import com.squareup.picasso.Picasso
 
-class HistoryAdapter(private val dataList: MutableList<searchData>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(private val dataList: MutableList<GenerateData>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.created_view)
         val word: TextView = view.findViewById(R.id.search_word)
@@ -22,10 +22,10 @@ class HistoryAdapter(private val dataList: MutableList<searchData>) : RecyclerVi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val searchData = dataList[position]
+        val generateData = dataList[position]
 
-        holder.image.setBackgroundResource(searchData.Image)
-        holder.word.text = searchData.word.text
+        Picasso.get().load(generateData.ImageUrl).into(holder.image)
+        holder.word.text = generateData.word
     }
 
     override fun getItemCount(): Int = dataList.size
