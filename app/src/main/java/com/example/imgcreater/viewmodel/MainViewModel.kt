@@ -12,7 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    val openAI = OpenAI("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")
+    val openAI = OpenAI("APIkey")
 
     var imageUrl = MutableLiveData<String>()
 
