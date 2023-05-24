@@ -8,11 +8,13 @@ import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageCreation
 import com.aallam.openai.api.image.ImageSize
 import com.aallam.openai.client.OpenAI
+import com.example.imgcreater.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    val openAI = OpenAI("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")
+    val apiKey = BuildConfig.API_KEY
+    val openAI = OpenAI(apiKey)
 
     var imageUrl = MutableLiveData<String>()
 
