@@ -13,6 +13,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
+    
     val apiKey = BuildConfig.API_KEY
     val openAI = OpenAI(apiKey)
 
