@@ -9,9 +9,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI.setupWithNavController
-import com.example.imgcreater.R
 import com.example.imgcreater.databinding.FragmentMainBinding
+import com.example.imgcreater.model.generateData
 import com.example.imgcreater.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -31,8 +30,16 @@ class MainFragment : Fragment() {
             generateButton.setOnClickListener {
                 if (searchView.query.isNotEmpty()) {
                     viewModel.getData(searchView.query.toString())
-                    Log.d("MainFragmentWord", "${searchView.query}")
-                    findNavController().navigate(R.id.action_nav_main_to_resultFragment)
+                    viewModel.imageUrl.observe(viewLifecycleOwner) {
+                        val data = generateData(
+                            it,
+                            searchView.query.toString()
+                        )
+
+                        val action = MainFragmentDirections.actionNavMainToResultFragment(data)
+                        findNavController().navigate(action)
+                        Log.d("MainFragmentWord", "${searchView.query}")
+                    }
                 } else {
                     Toast.makeText(requireActivity(), "文字を入力してください", Toast.LENGTH_SHORT).show()
                 }

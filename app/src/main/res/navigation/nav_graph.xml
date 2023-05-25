@@ -10,9 +10,13 @@
         android:name="com.example.imgcreater.view.fragment.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
+
         <action
             android:id="@+id/action_nav_main_to_resultFragment"
             app:destination="@id/resultFragment" />
+        <argument
+            android:name="generateData"
+            app:argType="com.example.imgcreater.model.generateData" />
     </fragment>
 
     <fragment
@@ -30,5 +34,8 @@
         <action
             android:id="@+id/action_resultFragment_to_nav_main"
             app:popUpTo="@id/nav_main"/>
+        <argument
+            android:name="generateData"
+            app:argType="com.example.imgcreater.model.generateData" />
     </fragment>
 </navigation>
