@@ -7,10 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.imgcreater.R
-import com.example.imgcreater.model.GenerateData
+import com.example.imgcreater.model.generateData
 import com.squareup.picasso.Picasso
 
-class HistoryAdapter(private val dataList: MutableList<GenerateData>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(private val dataList: MutableList<generateData>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.created_view)
         val word: TextView = view.findViewById(R.id.search_word)

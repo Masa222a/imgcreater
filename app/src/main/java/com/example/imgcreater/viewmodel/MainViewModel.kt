@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    val apiKey = BuildConfig.API_KEY
-    val openAI = OpenAI(apiKey)
+    private val apiKey = BuildConfig.API_KEY
+    private val openAI = OpenAI(apiKey)
 
     var imageUrl = MutableLiveData<String>()
 
