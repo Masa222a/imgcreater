@@ -15,8 +15,8 @@
             android:id="@+id/action_nav_main_to_resultFragment"
             app:destination="@id/resultFragment" />
         <argument
-            android:name="generateData"
-            app:argType="com.example.imgcreater.model.generateData" />
+            android:name="imageEntity"
+            app:argType="com.example.imgcreater.model.ImageEntity" />
     </fragment>
 
     <fragment
@@ -35,7 +35,7 @@
             android:id="@+id/action_resultFragment_to_nav_main"
             app:popUpTo="@id/nav_main"/>
         <argument
-            android:name="generateData"
-            app:argType="com.example.imgcreater.model.generateData" />
+            android:name="imageEntity"
+            app:argType="com.example.imgcreater.model.ImageEntity" />
     </fragment>
 </navigation>

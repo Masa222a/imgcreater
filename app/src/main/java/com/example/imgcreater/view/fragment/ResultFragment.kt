@@ -21,7 +21,7 @@ class ResultFragment : Fragment() {
     ): View {
         binding = FragmentResultBinding.inflate(inflater, container, false)
 
-        Picasso.get().load(args.generateData.ImageUrl).into(binding.resultImg)
+        Picasso.get().load(args.imageEntity.ImageUrl).into(binding.resultImg)
 
         binding.backButton.setOnClickListener(
             Navigation.createNavigateOnClickListener(R.id.action_resultFragment_to_nav_main)
