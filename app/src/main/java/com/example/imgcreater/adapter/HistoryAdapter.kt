@@ -10,10 +10,10 @@ import com.example.imgcreater.R
 import com.example.imgcreater.model.ImageEntity
 import com.squareup.picasso.Picasso
 
-class HistoryAdapter(private val dataList: MutableList<ImageEntity>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
+class HistoryAdapter(var dataList: MutableList<ImageEntity>) : RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val image: ImageView = view.findViewById(R.id.created_view)
-        val word: TextView = view.findViewById(R.id.search_word)
+        val image: ImageView = view.findViewById(R.id.historyImage)
+        val word: TextView = view.findViewById(R.id.historyWord)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +24,7 @@ class HistoryAdapter(private val dataList: MutableList<ImageEntity>) : RecyclerV
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val imageData = dataList[position]
 
-        Picasso.get().load(imageData.ImageUrl).into(holder.image)
+        Picasso.get().load(imageData.ImageUrl).resize(150, 150).into(holder.image)
         holder.word.text = imageData.word
     }
 

@@ -15,5 +15,5 @@ interface ImageDao {
     fun deleteImage(imageModel: ImageEntity)
 
     @Query("SELECT * FROM image_data_table")
-    fun getAllImages(): LiveData<List<ImageEntity>>
+    fun getAllImages(): LiveData<MutableList<ImageEntity>>
 }

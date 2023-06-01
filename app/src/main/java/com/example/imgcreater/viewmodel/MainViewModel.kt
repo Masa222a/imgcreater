@@ -18,13 +18,11 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
     private val apiKey = BuildConfig.API_KEY
     private val openAI = OpenAI(apiKey)
 
-    val allImages: LiveData<List<ImageEntity>>
     val repository: ImageRepository
 
     init {
         val dao = ImageDatabase.getDatabase(application).imageDAO()
         repository = ImageRepository(dao)
-        allImages = repository.allImages
     }
 
     var imageUrl = MutableLiveData<String>()
