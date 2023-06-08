@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +17,6 @@ import com.example.imgcreater.databinding.FragmentMainBinding
 import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.viewmodel.MainViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -42,6 +42,9 @@ class MainFragment : Fragment() {
 
             generateButton.setOnClickListener {
                 if (searchView.query.isNotEmpty()) {
+                    binding.progressBar.visibility = ProgressBar.VISIBLE
+                    binding.loadingText.visibility = View.VISIBLE
+                    binding.generateButton.visibility = View.INVISIBLE
                     viewModel.getData(searchView.query.toString())
                     setUpObserve()
                 } else {
@@ -53,7 +56,7 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    fun setUpObserve() {
+    private fun setUpObserve() {
         viewModel.imageUrl.observe(viewLifecycleOwner) {
             GlobalScope.launch(Dispatchers.IO) {
                 val bitmap: Bitmap = Picasso.get().load(it).get()
@@ -77,6 +80,8 @@ class MainFragment : Fragment() {
                 )
 
                 viewModel.insertImage(data)
+                binding.progressBar.visibility = ProgressBar.INVISIBLE
+                binding.loadingText.visibility = View.INVISIBLE
 
                 val action = MainFragmentDirections.actionNavMainToResultFragment(data)
                 findNavController().navigate(action)
