@@ -1,6 +1,7 @@
 package com.example.imgcreater.viewmodel
 
 import android.content.ContentResolver
+import android.content.ContentUris
 import android.content.ContentValues
 import android.graphics.Bitmap
 import android.net.Uri
@@ -14,7 +15,6 @@ import java.io.FileOutputStream
 import java.io.OutputStream
 
 class ResultViewModel: ViewModel() {
-    val imageData = MutableLiveData<Bitmap>()
 
     fun saveImageToStrage(
         bitmap: Bitmap,

@@ -7,4 +7,5 @@
     <string name="save_img">画像を保存する</string>
     <string name="back_button">backButton</string>
     <string name="result_image">resultImage</string>
+    <string name="generate_image">generate_image</string>
 </resources>

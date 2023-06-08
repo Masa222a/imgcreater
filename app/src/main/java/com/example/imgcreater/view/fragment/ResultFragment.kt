@@ -31,13 +31,10 @@ class ResultFragment : Fragment() {
             Navigation.createNavigateOnClickListener(R.id.action_resultFragment_to_nav_main)
         )
 
+        val contentResolver = requireContext().contentResolver
         binding.saveButton.setOnClickListener {
             val image = (binding.resultImg.drawable as BitmapDrawable).bitmap
-            val contentResolver = requireContext().contentResolver
-            viewModel.apply {
-                imageData.postValue(image)
-                saveImageToStrage(image, contentResolver)
-            }
+            viewModel.saveImageToStrage(image, contentResolver)
         }
 
         return binding.root

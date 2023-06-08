@@ -6,7 +6,7 @@ import com.example.imgcreater.model.ImageEntity
 
 class ImageRepository(private val imageDao: ImageDao) {
 
-    val allImages: LiveData<List<ImageEntity>> = imageDao.getAllImages()
+    val allImages: LiveData<MutableList<ImageEntity>> = imageDao.getAllImages()
 
     suspend fun insertImages(imageModel: ImageEntity) =
         imageDao.insertImage(imageModel)
