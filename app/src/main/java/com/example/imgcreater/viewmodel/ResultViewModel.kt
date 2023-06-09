@@ -1,14 +1,12 @@
 package com.example.imgcreater.viewmodel
 
 import android.content.ContentResolver
-import android.content.ContentUris
 import android.content.ContentValues
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.File
 import java.io.FileOutputStream
