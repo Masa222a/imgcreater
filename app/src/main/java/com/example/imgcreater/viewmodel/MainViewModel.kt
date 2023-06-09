@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
-import android.util.Log
 import androidx.lifecycle.*
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.image.ImageCreation
@@ -16,6 +15,7 @@ import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.repository.ImageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
 
@@ -45,7 +45,7 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
                         size = ImageSize.is256x256
                     )
                 )
-            Log.d("viewmodel", "$image")
+            Timber.d("$image")
             imageUrl.postValue(image[0].url)
         }
     }

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
@@ -41,6 +41,7 @@ class MainFragment : Fragment() {
             searchView.setBackgroundColor(resources.getColor(android.R.color.transparent))
 
             generateButton.setOnClickListener {
+                Timber.d("${binding.searchView.query}")
                 if (searchView.query.isNotEmpty()) {
                     binding.progressBar.visibility = ProgressBar.VISIBLE
                     binding.loadingText.visibility = View.VISIBLE
@@ -68,6 +69,7 @@ class MainFragment : Fragment() {
                 val file = File(directory, "$localDateTime")
                 FileOutputStream(file).use { stream ->
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                    Timber.d("$bitmap")
                     viewModel.uri.postValue(viewModel.getImageUri(requireContext().applicationContext, bitmap))
                 }
             }
@@ -86,7 +88,6 @@ class MainFragment : Fragment() {
                 val action = MainFragmentDirections.actionNavMainToResultFragment(data)
                 findNavController().navigate(action)
             }
-            Log.d("MainFragmentWord", "${binding.searchView.query}")
         }
     }
 }
