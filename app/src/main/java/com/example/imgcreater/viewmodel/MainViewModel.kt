@@ -6,6 +6,9 @@ import android.net.Uri
 import android.provider.MediaStore
 import androidx.lifecycle.*
 import com.aallam.openai.api.BetaOpenAI
+import com.aallam.openai.api.exception.OpenAIAPIException
+import com.aallam.openai.api.exception.OpenAIException
+import com.aallam.openai.api.exception.OpenAIHttpException
 import com.aallam.openai.api.image.ImageCreation
 import com.aallam.openai.api.image.ImageSize
 import com.aallam.openai.client.OpenAI
@@ -15,6 +18,7 @@ import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.repository.ImageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
@@ -31,22 +35,37 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
         repository = ImageRepository(dao)
     }
 
-    var imageUrl = MutableLiveData<String>()
+    var imageUrl = MutableLiveData<String?>()
     var uri = MutableLiveData<Uri>()
 
     @OptIn(BetaOpenAI::class)
     fun getData(word: String) {
+
         viewModelScope.launch(Dispatchers.IO) {
-            val image =
-                openAI.imageURL(
-                    creation = ImageCreation(
-                        prompt = word,
-                        n = 1,
-                        size = ImageSize.is256x256
+            try {
+                val image =
+                    openAI.imageURL(
+                        creation = ImageCreation(
+                            prompt = word,
+                            n = 1,
+                            size = ImageSize.is256x256
+                        )
                     )
-                )
-            Timber.d("$image")
-            imageUrl.postValue(image[0].url)
+                Timber.d("$image")
+                imageUrl.postValue(image[0].url)
+            } catch (e: OpenAIException) {
+                imageUrl.postValue(null)
+                Timber.d(e)
+            } catch (e: OpenAIHttpException) {
+                imageUrl.postValue(null)
+                Timber.d(e)
+            } catch (e: OpenAIAPIException) {
+                imageUrl.postValue(null)
+                Timber.d(e)
+            } catch (e: Exception) {
+                imageUrl.postValue(null)
+                Timber.d(e)
+            }
         }
     }
 
