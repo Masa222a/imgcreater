@@ -1,7 +1,9 @@
 package com.example.imgcreater.view.fragment
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.imgcreater.R
 import com.example.imgcreater.databinding.FragmentMainBinding
 import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.viewmodel.MainViewModel
@@ -46,8 +49,8 @@ class MainFragment : Fragment() {
                     binding.progressBar.visibility = ProgressBar.VISIBLE
                     binding.loadingText.visibility = View.VISIBLE
                     binding.generateButton.visibility = View.INVISIBLE
-                    viewModel.getData(searchView.query.toString())
                     setUpObserve()
+                    viewModel.getData(searchView.query.toString())
                 } else {
                     Toast.makeText(requireActivity(), "文字を入力してください", Toast.LENGTH_SHORT).show()
                 }
@@ -58,35 +61,49 @@ class MainFragment : Fragment() {
     }
 
     private fun setUpObserve() {
-        viewModel.imageUrl.observe(viewLifecycleOwner) {
-            GlobalScope.launch(Dispatchers.IO) {
-                val bitmap: Bitmap = Picasso.get().load(it).get()
-                val directory = ContextWrapper(context).getDir(
-                    "image",
-                    Context.MODE_PRIVATE
-                )
-                val localDateTime = LocalDateTime.now()
-                val file = File(directory, "$localDateTime")
-                FileOutputStream(file).use { stream ->
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                    Timber.d("$bitmap")
-                    viewModel.uri.postValue(viewModel.getImageUri(requireContext().applicationContext, bitmap))
+        viewModel.imageUrl.observe(viewLifecycleOwner) { imageUrl ->
+            if (imageUrl != null) {
+                GlobalScope.launch(Dispatchers.IO) {
+                    val bitmap: Bitmap = Picasso.get().load(imageUrl).get()
+                    val directory = ContextWrapper(context).getDir(
+                        "image",
+                        Context.MODE_PRIVATE
+                    )
+                    val localDateTime = LocalDateTime.now()
+                    val file = File(directory, "$localDateTime")
+                    FileOutputStream(file).use { stream ->
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                        Timber.d("$bitmap")
+                        viewModel.uri.postValue(viewModel.getImageUri(requireContext().applicationContext, bitmap))
+                    }
                 }
-            }
 
-            viewModel.uri.observe(viewLifecycleOwner) {
-                val data = ImageEntity(
-                    0,
-                    it.toString(),
-                    binding.searchView.query.toString()
-                )
+                viewModel.uri.observe(viewLifecycleOwner) {
+                    val data = ImageEntity(
+                        0,
+                        it.toString(),
+                        binding.searchView.query.toString()
+                    )
 
-                viewModel.insertImage(data)
+                    viewModel.insertImage(data)
+                    binding.progressBar.visibility = ProgressBar.INVISIBLE
+                    binding.loadingText.visibility = View.INVISIBLE
+
+                    val action = MainFragmentDirections.actionNavMainToResultFragment(data)
+                    findNavController().navigate(action)
+                }
+            } else {
                 binding.progressBar.visibility = ProgressBar.INVISIBLE
                 binding.loadingText.visibility = View.INVISIBLE
-
-                val action = MainFragmentDirections.actionNavMainToResultFragment(data)
-                findNavController().navigate(action)
+                binding.generateButton.visibility = View.VISIBLE
+                val alertDialog = AlertDialog.Builder(requireContext())
+                alertDialog
+                    .setMessage(getString(R.string.generate_faild_message))
+                    .setPositiveButton("はい") { _, _ ->
+                        alertDialog.setOnDismissListener {
+                            it.dismiss()
+                        }
+                    }.show()
             }
         }
     }
