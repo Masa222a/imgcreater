@@ -18,7 +18,6 @@ import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.repository.ImageRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.json.JSONObject
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 
@@ -28,7 +27,7 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
     private val apiKey = BuildConfig.API_KEY
     private val openAI = OpenAI(apiKey)
 
-    val repository: ImageRepository
+    private val repository: ImageRepository
 
     init {
         val dao = ImageDatabase.getDatabase(application).imageDAO()
@@ -40,7 +39,6 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
 
     @OptIn(BetaOpenAI::class)
     fun getData(word: String) {
-
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val image =
