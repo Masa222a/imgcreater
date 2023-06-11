@@ -37,6 +37,8 @@ class ResultFragment : Fragment() {
             viewModel.saveImageToStrage(image, contentResolver)
         }
 
+        binding.wordHistory.text = args.imageEntity.word
+
         return binding.root
     }
 }
