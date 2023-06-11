@@ -10,4 +10,5 @@
     <string name="generate_image">generate_image</string>
     <string name="loading_text">画像を生成中です。\nしばらくお待ちください。</string>
     <string name="generate_faild_message">画像が生成できませんでした。電場の良い場所で再度お試しください。</string>
+    <string name="search_word_label">検索ワード</string>
 </resources>
