@@ -54,7 +54,7 @@
         app:layout_constraintTop_toBottomOf="@+id/saveButton">
 
         <TextView
-            android:id="@+id/searchWordLabel"
+            android:id="@+id/searchedWordLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -67,7 +67,7 @@
             tools:ignore="MissingConstraints" />
 
         <TextView
-            android:id="@+id/searchWord"
+            android:id="@+id/wordHistory"
             android:layout_width="0dp"
             android:layout_height="130dp"
             android:layout_marginStart="16dp"
@@ -81,7 +81,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/searchedWord"
             app:layout_constraintStart_toStartOf="@id/searchedWord"
-            app:layout_constraintTop_toBottomOf="@+id/searchWordLabel" />
+            app:layout_constraintTop_toBottomOf="@+id/searchedWordLabel" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
