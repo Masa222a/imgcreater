@@ -63,35 +63,7 @@ class MainFragment : Fragment() {
     private fun setUpObserve() {
         viewModel.imageUrl.observe(viewLifecycleOwner) { imageUrl ->
             if (imageUrl != null) {
-                GlobalScope.launch(Dispatchers.IO) {
-                    val bitmap: Bitmap = Picasso.get().load(imageUrl).get()
-                    val directory = ContextWrapper(context).getDir(
-                        "image",
-                        Context.MODE_PRIVATE
-                    )
-                    val localDateTime = LocalDateTime.now()
-                    val file = File(directory, "$localDateTime")
-                    FileOutputStream(file).use { stream ->
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
-                        Timber.d("$bitmap")
-                        viewModel.uri.postValue(viewModel.getImageUri(requireContext().applicationContext, bitmap))
-                    }
-                }
-
-                viewModel.uri.observe(viewLifecycleOwner) {
-                    val data = ImageEntity(
-                        0,
-                        it.toString(),
-                        binding.searchView.query.toString()
-                    )
-
-                    viewModel.insertImage(data)
-                    binding.progressBar.visibility = ProgressBar.INVISIBLE
-                    binding.loadingText.visibility = View.INVISIBLE
-
-                    val action = MainFragmentDirections.actionNavMainToResultFragment(data)
-                    findNavController().navigate(action)
-                }
+                viewModel.saveToStorage(requireActivity().applicationContext, imageUrl)
             } else {
                 binding.progressBar.visibility = ProgressBar.INVISIBLE
                 binding.loadingText.visibility = View.INVISIBLE
@@ -105,6 +77,21 @@ class MainFragment : Fragment() {
                         }
                     }.show()
             }
+        }
+
+        viewModel.uri.observe(viewLifecycleOwner) {
+            val data = ImageEntity(
+                0,
+                it.toString(),
+                binding.searchView.query.toString()
+            )
+
+            viewModel.insertImage(data)
+            binding.progressBar.visibility = ProgressBar.INVISIBLE
+            binding.loadingText.visibility = View.INVISIBLE
+
+            val action = MainFragmentDirections.actionNavMainToResultFragment(data)
+            findNavController().navigate(action)
         }
     }
 }

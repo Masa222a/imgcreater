@@ -1,6 +1,7 @@
 package com.example.imgcreater.viewmodel
 
 import android.content.Context
+import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.net.Uri
 import android.provider.MediaStore
@@ -16,10 +17,15 @@ import com.example.imgcreater.BuildConfig
 import com.example.imgcreater.model.ImageDatabase
 import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.repository.ImageRepository
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.time.LocalDateTime
 
 
 class MainViewModel(application: android.app.Application) : AndroidViewModel(application) {
@@ -79,5 +85,23 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
         val path: String =
             MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "image", null)
         return Uri.parse(path)
+    }
+
+    fun saveToStorage(context: Context, imageUrl: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val bitmap: Bitmap = Picasso.get().load(imageUrl).get()
+            val directory = ContextWrapper(context).getDir(
+                "image",
+                Context.MODE_PRIVATE
+            )
+            val localDateTime = LocalDateTime.now()
+            val file = File(directory, "$localDateTime")
+            FileOutputStream(file).use { stream ->
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                Timber.d("$bitmap")
+                val url = getImageUri(context, bitmap)
+                uri.postValue(url!!)
+            }
+        }
     }
 }
