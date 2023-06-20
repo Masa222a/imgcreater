@@ -1,10 +1,6 @@
 package com.example.imgcreater.view.fragment
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.DialogInterface
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +14,7 @@ import com.example.imgcreater.R
 import com.example.imgcreater.databinding.FragmentMainBinding
 import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.viewmodel.MainViewModel
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
-import java.io.FileOutputStream
-import java.time.LocalDateTime
 
 class MainFragment : Fragment() {
     private val viewModel: MainViewModel by lazy {
@@ -46,9 +35,10 @@ class MainFragment : Fragment() {
             generateButton.setOnClickListener {
                 Timber.d("${binding.searchView.query}")
                 if (searchView.query.isNotEmpty()) {
-                    binding.progressBar.visibility = ProgressBar.VISIBLE
-                    binding.loadingText.visibility = View.VISIBLE
-                    binding.generateButton.visibility = View.INVISIBLE
+                    progressBar.visibility = ProgressBar.VISIBLE
+                    loadingText.visibility = View.VISIBLE
+                    generateButton.visibility = View.INVISIBLE
+
                     setUpObserve()
                     viewModel.getData(searchView.query.toString())
                 } else {
@@ -65,17 +55,7 @@ class MainFragment : Fragment() {
             if (imageUrl != null) {
                 viewModel.saveToStorage(requireActivity().applicationContext, imageUrl)
             } else {
-                binding.progressBar.visibility = ProgressBar.INVISIBLE
-                binding.loadingText.visibility = View.INVISIBLE
-                binding.generateButton.visibility = View.VISIBLE
-                val alertDialog = AlertDialog.Builder(requireContext())
-                alertDialog
-                    .setMessage(getString(R.string.generate_faild_message))
-                    .setPositiveButton("はい") { _, _ ->
-                        alertDialog.setOnDismissListener {
-                            it.dismiss()
-                        }
-                    }.show()
+                startAlert()
             }
         }
 
@@ -87,11 +67,29 @@ class MainFragment : Fragment() {
             )
 
             viewModel.insertImage(data)
-            binding.progressBar.visibility = ProgressBar.INVISIBLE
-            binding.loadingText.visibility = View.INVISIBLE
+            binding.apply {
+                progressBar.visibility = ProgressBar.INVISIBLE
+                loadingText.visibility = View.INVISIBLE
+            }
 
             val action = MainFragmentDirections.actionNavMainToResultFragment(data)
             findNavController().navigate(action)
         }
+    }
+
+    private fun startAlert() {
+        binding.apply {
+            progressBar.visibility = ProgressBar.INVISIBLE
+            loadingText.visibility = View.INVISIBLE
+            generateButton.visibility = View.VISIBLE
+        }
+        val alertDialog = AlertDialog.Builder(requireContext())
+        alertDialog
+            .setMessage(getString(R.string.generate_faild_message))
+            .setPositiveButton("はい") { _, _ ->
+                alertDialog.setOnDismissListener {
+                    it.dismiss()
+                }
+            }.show()
     }
 }
