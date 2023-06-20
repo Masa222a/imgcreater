@@ -25,19 +25,21 @@ class ResultFragment : Fragment() {
     ): View {
         binding = FragmentResultBinding.inflate(inflater, container, false)
 
-        Picasso.get().load(args.imageEntity.ImageUrl).into(binding.resultImg)
+        binding.apply {
+            Picasso.get().load(args.imageEntity.ImageUrl).into(resultImg)
 
-        binding.backButton.setOnClickListener(
-            Navigation.createNavigateOnClickListener(R.id.action_resultFragment_to_nav_main)
-        )
+            backButton.setOnClickListener(
+                Navigation.createNavigateOnClickListener(R.id.action_resultFragment_to_nav_main)
+            )
 
-        val contentResolver = requireContext().contentResolver
-        binding.saveButton.setOnClickListener {
-            val image = (binding.resultImg.drawable as BitmapDrawable).bitmap
-            viewModel.saveImageToStrage(image, contentResolver)
+            val contentResolver = requireContext().contentResolver
+            saveButton.setOnClickListener {
+                val image = (resultImg.drawable as BitmapDrawable).bitmap
+                viewModel.saveImageToStrage(image, contentResolver)
+            }
+
+            wordHistory.text = args.imageEntity.word
         }
-
-        binding.wordHistory.text = args.imageEntity.word
 
         return binding.root
     }
