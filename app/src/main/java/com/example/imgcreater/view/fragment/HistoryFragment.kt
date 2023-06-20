@@ -30,13 +30,7 @@ class HistoryFragment : Fragment() {
     ): View {
         binding = FragmentHistoryBinding.inflate(inflater, container, false)
 
-        val recyclerView = binding.recyclerView
-        adapter = HistoryAdapter(mutableListOf())
-        recyclerView.adapter = adapter
-        val layoutManager = StaggeredGridLayoutManager(
-            2, StaggeredGridLayoutManager.VERTICAL
-        )
-        recyclerView.layoutManager = layoutManager
+        setUpRecyclerview()
 
         viewModel.allImages.observe(viewLifecycleOwner) {
             changeImageList(it)
@@ -49,9 +43,20 @@ class HistoryFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     fun changeImageList(imageList: MutableList<ImageEntity>) {
         GlobalScope.launch(Dispatchers.Main) {
-            adapter?.dataList = imageList
-            adapter?.notifyDataSetChanged()
+            adapter.let {
+                it?.dataList = imageList
+                it?.notifyDataSetChanged()
+            }
         }
     }
 
+    fun setUpRecyclerview() {
+        val recyclerView = binding.recyclerView
+        adapter = HistoryAdapter(mutableListOf())
+        recyclerView.adapter = adapter
+        val layoutManager = StaggeredGridLayoutManager(
+            2, StaggeredGridLayoutManager.VERTICAL
+        )
+        recyclerView.layoutManager = layoutManager
+    }
 }
