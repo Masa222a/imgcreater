@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Bitmap
 import android.net.Uri
-import android.provider.MediaStore
 import androidx.lifecycle.*
 import com.aallam.openai.api.BetaOpenAI
 import com.aallam.openai.api.exception.OpenAIAPIException
@@ -19,10 +18,8 @@ import com.example.imgcreater.model.ImageEntity
 import com.example.imgcreater.repository.ImageRepository
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
@@ -79,14 +76,6 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
         }
     }
 
-    fun getImageUri(inContext: Context, inImage: Bitmap): Uri? {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path: String =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "image", null)
-        return Uri.parse(path)
-    }
-
     fun saveToStorage(context: Context, imageUrl: String) {
         viewModelScope.launch(Dispatchers.IO) {
             val bitmap: Bitmap = Picasso.get().load(imageUrl).get()
@@ -99,8 +88,8 @@ class MainViewModel(application: android.app.Application) : AndroidViewModel(app
             FileOutputStream(file).use { stream ->
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 Timber.d("$bitmap")
-                val url = getImageUri(context, bitmap)
-                uri.postValue(url!!)
+                val parseUri = Uri.fromFile(file)
+                uri.postValue(parseUri)
             }
         }
     }
