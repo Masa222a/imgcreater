@@ -35,7 +35,7 @@ class ResultFragment : Fragment() {
             val contentResolver = requireContext().contentResolver
             saveButton.setOnClickListener {
                 val image = (resultImg.drawable as BitmapDrawable).bitmap
-                viewModel.saveImageToStrage(image, contentResolver)
+                viewModel.saveImageToStorage(image, contentResolver)
             }
 
             wordHistory.text = args.imageEntity.word

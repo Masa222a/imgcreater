@@ -14,7 +14,7 @@ import java.io.OutputStream
 
 class ResultViewModel: ViewModel() {
 
-    fun saveImageToStrage(
+    fun saveImageToStorage(
         bitmap: Bitmap,
         contentResolver: ContentResolver,
         fileName: String = "screenshot.jpg",
