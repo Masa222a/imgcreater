@@ -42,7 +42,7 @@ class MainFragment : Fragment() {
                     setUpObserve()
                     viewModel.getData(searchView.query.toString())
                 } else {
-                    Toast.makeText(requireActivity(), "文字を入力してください", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireActivity(), getString(R.string.please_enter_a_letter), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -86,7 +86,7 @@ class MainFragment : Fragment() {
         val alertDialog = AlertDialog.Builder(requireContext())
         alertDialog
             .setMessage(getString(R.string.generate_faild_message))
-            .setPositiveButton("はい") { _, _ ->
+            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                 alertDialog.setOnDismissListener {
                     it.dismiss()
                 }
