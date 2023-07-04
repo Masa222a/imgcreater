@@ -28,7 +28,6 @@ class MainFragment : Fragment() {
     ): View {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-
         binding.apply {
             searchView.setBackgroundColor(resources.getColor(android.R.color.transparent))
 
@@ -39,13 +38,14 @@ class MainFragment : Fragment() {
                     loadingText.visibility = View.VISIBLE
                     generateButton.visibility = View.INVISIBLE
 
-                    setUpObserve()
                     viewModel.getData(searchView.query.toString())
                 } else {
                     Toast.makeText(requireActivity(), getString(R.string.please_enter_a_letter), Toast.LENGTH_SHORT).show()
                 }
             }
         }
+
+        setUpObserve()
 
         return binding.root
     }
@@ -70,6 +70,8 @@ class MainFragment : Fragment() {
             binding.apply {
                 progressBar.visibility = ProgressBar.INVISIBLE
                 loadingText.visibility = View.INVISIBLE
+                searchView.setQuery("", false)
+                searchView.isIconified = true
             }
 
             val action = MainFragmentDirections.actionNavMainToResultFragment(data)
